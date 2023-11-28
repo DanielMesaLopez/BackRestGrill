@@ -20,4 +20,23 @@ const getProductos = (request, response) => {
 app.route("/productos")
 .get(getProductos);
 
+//Agregar producto
+const postProductos = (request, response) => {
+    const {id_productos, id_categoria, descripcion_producto, image, precio, cantidad, estado} = request.body;
+    connection.query("INSERT INTO productos(id_productos, id_categoria, descripcion_producto, image, precio, cantidad, estado) VALUES (?, ?, ?, ?, ?, ?,?)",
+    [id_productos, id_categoria, descripcion_producto, image, precio, cantidad, estado],
+    (error, results) => {
+        if (error) throw error;
+        response.status(201).json({"Item creado correctamente": results.affectedRows});
+    });
+};
+ 
+//ruta
+app.route("/productocrear")
+.post(postProductos);
+
+
+//Actualizar producto
+
+
 module.exports = app;
