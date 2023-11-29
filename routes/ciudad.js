@@ -8,7 +8,7 @@ const {connection} = require("../config.db");
 
 //Utilizando el método Get 
 const getCiudad = (request, response) => {
-    connection.query("SELECT * FROM ciudad", 
+    connection.query("SELECT * FROM ciudad where cobertura=1", 
     (error, results) => {
         if(error)
             throw error;
@@ -19,5 +19,53 @@ const getCiudad = (request, response) => {
 //ruta de consumo
 app.route("/Ciudad")
 .get(getCiudad);
+
+//Agregar Ciudad
+const postCiudad = (request, response) => {
+    const {id_ciudad, nombre_ciudad, cobertura} = request.body;
+    connection.query("INSERT INTO ciudad(id_ciudad, nombre_ciudad, cobertura) VALUES (?, ?, ?)",
+    [id_ciudad, nombre_ciudad, cobertura],
+    (error, results) => {
+        if (error) throw error;
+        response.status(201).json({"Ciudad creado correctamente": results.affectedRows});
+    });
+};
+ 
+//ruta
+app.route("/ciudadCrear")
+.post(postCiudad);
+
+
+// Actualizar Ciudad
+const putCiudad = (request, response) => {
+    const {id_ciudad, nombre_ciudad, cobertura} = request.body;
+    connection.query("UPDATE ciudad set id_ciudad= ?, nombre_ciudad= ?, cobertura= ?  where id_ciudad=?",
+    [ nombre_ciudad, cobertura, id_ciudad],
+    (error, results) => {
+       if(error)
+          throw error;
+       response.status(201).json({"Ciudad actualizado correctamente": results.affectedRows});
+      });
+    };
+   
+    //ruta
+    app.route("/CiudadA")
+    .put(putCiudad);
+
+    //Eliminar Ciudad
+const delCiudad= (request, response) => {
+    const id_ciudad = request.params.id_productos;
+    connection.query("update  ciudad set cobertura=0 where id_ciudad = ?",
+    [id_ciudad],
+    (error, results) => {
+        if(error)
+            throw error;
+        response.status(201).json({"Ciudad eliminada":results.affectedRows});
+    });
+};
+ 
+//ruta
+app.route("/ciudad/:id_ciudad")
+.delete(delCiudad);
 
 module.exports = app;

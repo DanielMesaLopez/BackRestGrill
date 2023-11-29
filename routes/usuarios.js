@@ -8,7 +8,7 @@ const {connection} = require("../config.db");
 
 //Utilizando el método Get 
 const getUsuarios = (request, response) => {
-    connection.query("SELECT * FROM usuarios", 
+    connection.query("SELECT * FROM usuarios where estado=1", 
     (error, results) => {
         if(error)
             throw error;
@@ -19,5 +19,53 @@ const getUsuarios = (request, response) => {
 //ruta de consumo
 app.route("/usuarios")
 .get(getUsuarios);
+
+//Agregar Usuario
+const postUsuario = (request, response) => {
+    const {id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario} = request.body;
+    connection.query("INSERT INTO productos(id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario],
+    (error, results) => {
+        if (error) throw error;
+        response.status(201).json({"Usuario creado correctamente": results.affectedRows});
+    });
+};
+ 
+//ruta
+app.route("/usuarioCrear")
+.post(postUsuario);
+
+
+// Actualizar usuario
+const putUsuario = (request, response) => {
+    const {id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario} = request.body;
+    connection.query("UPDATE usuario set id_ciudad= ? , id_rol= ? , id_refiere= ? , nombre_usuario= ? , direccion= ? , estado= ? , contraseña_usuario= ? , correo_usuario= ? , telefono_usuario= ?  where id_usuarios=?",
+    [id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario, id_usuarios],
+    (error, results) => {
+       if(error)
+          throw error;
+       response.status(201).json({"Usuario actualizado correctamente": results.affectedRows});
+      });
+    };
+   
+    //ruta
+    app.route("/usuarioA")
+    .put(putUsuario);
+
+    //Eliminar Usuario
+const delUsuarios= (request, response) => {
+    const id_usuarios = request.params.id_usuarios;
+    connection.query("update  usuario set estado=0 where id_usuarios = ?",
+    [id_usuarios],
+    (error, results) => {
+        if(error)
+            throw error;
+        response.status(201).json({"Usuario eliminado":results.affectedRows});
+    });
+};
+ 
+//ruta
+app.route("/usuarios/:id_usuarios")
+.delete(delUsuarios);
 
 module.exports = app;
