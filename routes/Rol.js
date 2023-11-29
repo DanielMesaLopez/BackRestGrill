@@ -23,7 +23,7 @@ app.route("/Rol")
 //Agregar Rol
 const postRol = (request, response) => {
     const {id_rol, descripcion, nombre} = request.body;
-    connection.query("INSERT INTO productos(id_rol, descripcion, nombre) VALUES (?, ?, ?)",
+    connection.query("INSERT INTO rol(id_rol, descripcion, nombre) VALUES (?, ?, ?)",
     [id_rol, descripcion, nombre],
     (error, results) => {
         if (error) throw error;
@@ -39,7 +39,7 @@ app.route("/rolCreado")
 // Actualizar Rol
 const putRol = (request, response) => {
     const {id_rol, descripcion, nombre} = request.body;
-    connection.query("UPDATE productos set descripcion= ?, nombre= ?  where id_rol=?",
+    connection.query("UPDATE rol set descripcion= ?, nombre= ?  where id_rol=?",
     [descripcion, nombre, id_rol],
     (error, results) => {
        if(error)
@@ -55,7 +55,7 @@ const putRol = (request, response) => {
     //Eliminar Rol
 const delRol= (request, response) => {
     const id_rol = request.params.id_rol;
-    connection.query("update  rol set estado=0 where id_rol = ?",
+    connection.query("delete from rol where id_rol = ?",
     [id_rol],
     (error, results) => {
         if(error)

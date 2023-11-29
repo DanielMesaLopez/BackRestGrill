@@ -8,7 +8,7 @@ const {connection} = require("../config.db");
 
 //Utilizando el método Get 
 const getCarrito = (request, response) => {
-    connection.query("SELECT * FROM carrito where estado=DESACTIVADO", 
+    connection.query("SELECT * FROM carrito where estado=2", 
     (error, results) => {
         if(error)
             throw error;
@@ -23,7 +23,7 @@ app.route("/carrito")
 //Agregar Carrito
 const postCarrito = (request, response) => {
     const {id_carrito, id_usuarios, fecha_compra, fecha_pago, estado} = request.body;
-    connection.query("INSERT INTO carrito(id_carrito, id_usuarios, fecha_compra, fecha_pago, estado) VALUES (?, ?, ?, ?, ?,)",
+    connection.query("INSERT INTO carrito(id_carrito, id_usuarios, fecha_compra, fecha_pago, estado) VALUES (?, ?, ?, ?, ?)",
     [id_carrito, id_usuarios, fecha_compra, fecha_pago, estado],
     (error, results) => {
         if (error) throw error;
@@ -55,7 +55,7 @@ const putCarrito = (request, response) => {
     //Eliminar Carrito
 const delCarrito= (request, response) => {
     const id_carrito = request.params.id_carrito;
-    connection.query("update  carrito set estado=0 where id_carrito = ?",
+    connection.query("delete from carrito where id_carrito = ?",
     [id_carrito],
     (error, results) => {
         if(error)

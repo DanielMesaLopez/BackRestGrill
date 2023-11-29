@@ -8,7 +8,7 @@ const {connection} = require("../config.db");
 
 //Utilizando el método Get 
 const getCiudad = (request, response) => {
-    connection.query("SELECT * FROM ciudad where cobertura=1", 
+    connection.query("SELECT * FROM ciudad", 
     (error, results) => {
         if(error)
             throw error;
@@ -39,7 +39,7 @@ app.route("/ciudadCrear")
 // Actualizar Ciudad
 const putCiudad = (request, response) => {
     const {id_ciudad, nombre_ciudad, cobertura} = request.body;
-    connection.query("UPDATE ciudad set id_ciudad= ?, nombre_ciudad= ?, cobertura= ?  where id_ciudad=?",
+    connection.query("UPDATE ciudad set nombre_ciudad= ?, cobertura= ?  where id_ciudad=?",
     [ nombre_ciudad, cobertura, id_ciudad],
     (error, results) => {
        if(error)
@@ -54,8 +54,8 @@ const putCiudad = (request, response) => {
 
     //Eliminar Ciudad
 const delCiudad= (request, response) => {
-    const id_ciudad = request.params.id_productos;
-    connection.query("update  ciudad set cobertura=0 where id_ciudad = ?",
+    const id_ciudad = request.params.id_ciudad;
+    connection.query("delete from ciudad where id_ciudad = ?",
     [id_ciudad],
     (error, results) => {
         if(error)

@@ -55,7 +55,7 @@ const putProductos = (request, response) => {
     //Eliminar Producto
 const delProductos= (request, response) => {
     const id_productos = request.params.id_productos;
-    connection.query("update  productos set estado=0 where id_productos = ?",
+    connection.query("delete from productos where id_productos = ?",
     [id_productos],
     (error, results) => {
         if(error)

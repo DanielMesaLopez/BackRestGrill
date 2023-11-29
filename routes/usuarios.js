@@ -8,7 +8,7 @@ const {connection} = require("../config.db");
 
 //Utilizando el método Get 
 const getUsuarios = (request, response) => {
-    connection.query("SELECT * FROM usuarios where estado=1", 
+    connection.query("SELECT * FROM usuarios", 
     (error, results) => {
         if(error)
             throw error;
@@ -23,7 +23,7 @@ app.route("/usuarios")
 //Agregar Usuario
 const postUsuario = (request, response) => {
     const {id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario} = request.body;
-    connection.query("INSERT INTO productos(id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    connection.query("INSERT INTO usuarios(id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario],
     (error, results) => {
         if (error) throw error;
@@ -39,7 +39,7 @@ app.route("/usuarioCrear")
 // Actualizar usuario
 const putUsuario = (request, response) => {
     const {id_usuarios, id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario} = request.body;
-    connection.query("UPDATE usuario set id_ciudad= ? , id_rol= ? , id_refiere= ? , nombre_usuario= ? , direccion= ? , estado= ? , contraseña_usuario= ? , correo_usuario= ? , telefono_usuario= ?  where id_usuarios=?",
+    connection.query("UPDATE usuarios set id_ciudad= ? , id_rol= ? , id_refiere= ? , nombre_usuario= ? , direccion= ? , estado= ? , contraseña_usuario= ? , correo_usuario= ? , telefono_usuario= ?  where id_usuarios=?",
     [id_ciudad, id_rol, id_refiere, nombre_usuario, direccion, estado, contraseña_usuario, correo_usuario, telefono_usuario, id_usuarios],
     (error, results) => {
        if(error)
@@ -55,7 +55,7 @@ const putUsuario = (request, response) => {
     //Eliminar Usuario
 const delUsuarios= (request, response) => {
     const id_usuarios = request.params.id_usuarios;
-    connection.query("update  usuario set estado=0 where id_usuarios = ?",
+    connection.query("delete from usuarios where id_usuarios = ?",
     [id_usuarios],
     (error, results) => {
         if(error)

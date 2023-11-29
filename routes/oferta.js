@@ -23,7 +23,7 @@ app.route("/oferta")
 //Agregar oferta
 const postOferta = (request, response) => {
     const {id_oferta, id_productos, nombre_oferta, descripcion, estado, fecha_inicio, fecha_fin, descuento} = request.body;
-    connection.query("INSERT INTO oferta(id_oferta, id_productos, nombre_oferta, descripcion, estado, fecha_inicio, fecha_fin, descuento) VALUES (?, ?, ?, ?, ?, ?,?,?)",
+    connection.query("INSERT INTO oferta(id_oferta, id_productos, nombre_oferta, descripcion, estado, fecha_inicio, fecha_fin, descuento) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     [id_oferta, id_productos, nombre_oferta, descripcion, estado, fecha_inicio, fecha_fin, descuento],
     (error, results) => {
         if (error) throw error;
@@ -54,8 +54,8 @@ const putOferta = (request, response) => {
 
     //Eliminar Oferta
 const delOferta= (request, response) => {
-    const id_oferta = request.params.id_productos;
-    connection.query("update  oferta set estado=0 where id_oferta = ?",
+    const id_oferta = request.params.id_oferta;
+    connection.query("delete from oferta where id_oferta = ?",
     [id_oferta],
     (error, results) => {
         if(error)
